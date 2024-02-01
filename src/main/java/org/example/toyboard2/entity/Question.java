@@ -18,7 +18,8 @@ import java.util.List;
 @Entity
 public class Question {
 
-    public Question(String title,String content,LocalDateTime createdAt){
+    public Question(Long id,String title,String content,LocalDateTime createdAt){
+        this.id = id;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
@@ -26,7 +27,7 @@ public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="QUESTION_ID")
+    @Column
     private Long id;
 
     @Column(length = 200)
@@ -42,6 +43,6 @@ public class Question {
     private List<Answer> answer;
 
     public static QuestionDTO toDto(Question question){
-        return new QuestionDTO(question.getTitle(), question.getContent(), question.getCreatedAt());
+        return new QuestionDTO(question.getId(), question.getTitle(), question.getContent(), question.getCreatedAt());
     }
 }
