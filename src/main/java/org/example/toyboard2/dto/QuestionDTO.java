@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 public class QuestionDTO {
-
+    private Long id;
     private String title;
     private String content;
 
@@ -19,6 +19,7 @@ public class QuestionDTO {
 
     public static Question toEntity(QuestionDTO questionDTO){
         Question question = new Question();
+        question.setId(question.getId());
         question.setTitle(questionDTO.getTitle());
         question.setContent(questionDTO.getContent());
         question.setCreatedAt(questionDTO.getCreatedAt());

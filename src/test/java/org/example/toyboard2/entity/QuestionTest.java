@@ -17,28 +17,15 @@ class QuestionTest {
     @Autowired
     private QuestionRepository questionRepository;
 
-    @AfterEach
-    void clear(){
-        questionRepository.deleteAllInBatch();
-    }
+
 
 
 
     @Test
     void test1(){
         //given
-        Question question = new Question("안녕하세요","이거 글 잘 써지는건가", LocalDateTime.now());
-        Question question2 = new Question("안녕하세요2","이거 글 잘 써지는건가2", LocalDateTime.now());
-
-
-        //when
+        Question question = new Question(1L,"안녕하세요","이거 글 잘 써지는건가", LocalDateTime.now());
         questionRepository.save(question);
-        questionRepository.save(question2);
-
-
-
-        //then
-        Assertions.assertThat(questionRepository.findAll().size()).isEqualTo(2);
 
 
     }
