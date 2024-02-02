@@ -1,25 +1,44 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- 여기에 <head> 내용을 추가할 수 있습니다. -->
+    <meta charset="UTF-8">
+    <title>Question List</title>
+    <!-- Bootstrap CSS 추가 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<table>
-    <thead>
-    <tr>
-        <th>제목</th>
-        <th>작성일시</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="question, index : ${questionList}">
-        <td>
-            <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.title}"></a>
-        </td>
-        <td th:text="${question.createdAt}"></td>
-    </tr>
-    </tbody>
-</table>
+<div class="container mt-4">
+    <h2>질문 목록</h2>
+    <table class="table table-hover table-striped mt-3">
+        <thead class="thead-dark">
+        <tr>
+            <th>제목</th>
+            <th>작성일시</th>
+            <th>관리</th> <!-- 관리 열 추가 -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="question : ${questionList}">
+            <td>
+                <a th:href="@{/question/detail/{id}(id=${question.id})}" th:text="${question.title}"></a>
 
+            </td>
+            <td th:text="${#temporals.format(question.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
+            <td>
+                <!-- 삭제 요청을 위한 폼 -->
+                <form th:action="@{/question/delete/{id}(id=${question.id})}" method="post">
+                    <input type="hidden" name="_method" value="delete" />
+                    <button type="submit" class="btn btn-danger btn-sm">삭제</button>
+                </form>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
