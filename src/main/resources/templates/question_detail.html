@@ -3,25 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Question Detail</title>
+    <!-- Bootstrap CSS 추가 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- 여기에 추가적인 CSS 또는 JavaScript 파일을 포함할 수 있습니다 -->
 </head>
 <body>
-<div>
-    <h1>질문 상세</h1>
-    <div>
-        <h2 th:text="${questionDetail.title}">제목</h2>
-        <p th:text="${questionDetail.content}">질문 내용</p>
-        <p><strong>Created At:</strong> <span th:text="${questionDetail.createdAt}">작성 시간</span></p>
+<div class="container mt-5">
+    <h1 class="mb-4">질문 상세</h1>
+    <div class="card">
+        <div class="card-header">
+            <h2 th:text="${questionDetail.title}">제목</h2>
+        </div>
+        <div class="card-body">
+            <p th:text="${questionDetail.content}">질문 내용</p>
+            <p><strong>Created At:</strong> <span th:text="${#temporals.format(questionDetail.createdAt, 'yyyy/MM/dd HH:mm')}">작성 시간</span></p>
+
+        </div>
     </div>
 
+    <!-- 답변 등록 폼 -->
+    <div class="mt-4">
+        <form th:action="@{|/answer/create/${questionDetail.id}|}" method="post">
+            <div class="form-group">
+                <textarea class="form-control" name="content" id="content" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">답변등록</button>
+        </form>
+    </div>
 
-
-    <form th:action="@{|/answer/create/${questionDetail.id}|}" method="post">
-        <textarea name="content" id="content" rows="10"></textarea>
-        <input type="submit" value="답변등록">
-    </form>
-
-    <!-- 여기에 추가적인 내용 또는 기능을 포함할 수 있습니다 -->
+    <!-- 답변 목록 -->
+    <h5 class="mt-4" th:text="|${#lists.size(questionDetail.answerDTOList)}개의 답변이 있습니다.|"></h5>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item" th:each="answer : ${questionDetail.answerDTOList}" th:text="${answer.content}"></li>
+        </ul>
+    </div>
 </div>
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
