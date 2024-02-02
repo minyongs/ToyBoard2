@@ -38,11 +38,14 @@ public class Question {
 
     private LocalDateTime createdAt;
 
+    @PrePersist
+    public void onPrePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
+
 
     @OneToMany(mappedBy = "question" ,fetch = FetchType.LAZY,cascade = CascadeType.REMOVE) // 글이 삭제되면 댓글도 삭제
     private List<Answer> answer;
 
-    public static QuestionDTO toDto(Question question){
-        return new QuestionDTO(question.getId(), question.getTitle(), question.getContent(), question.getCreatedAt());
-    }
+
 }

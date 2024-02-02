@@ -24,16 +24,19 @@ public class Answer {
 
     private LocalDateTime createdAt;
 
+    public Answer(String content,LocalDateTime createdAt,Question question){
+        this.content = content;
+        this.createdAt =createdAt;
+        this.question = question;
+    }
+
 
     @ManyToOne
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
 
-    public static AnswerDTO toDto(Answer answer){
-        return new AnswerDTO(answer.getContent(), answer.getCreatedAt());
 
-    }
 
 
 

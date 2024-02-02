@@ -18,11 +18,11 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
 
-    //post 는 보내는 로직 dto -> entity
+    //post -> repository에 저장하는 로직!
     public void create(QuestionDTO questionDTO, String content) {
         // Question 엔티티 조회
         Question question = questionRepository.findById(questionDTO.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Question not found with id: " + questionDTO.getId()));
+                .orElseThrow(() -> new EntityNotFoundException("해당 id의 질문이 없습니다: " + questionDTO.getId()));
 
         // Answer 객체 생성 및 설정
         Answer answer = new Answer();

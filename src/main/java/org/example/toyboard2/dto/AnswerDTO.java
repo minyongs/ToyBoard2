@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.example.toyboard2.entity.Answer;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,10 +17,12 @@ public class AnswerDTO {
     private LocalDateTime createdAt;
 
 
+
     public static Answer toEntity(AnswerDTO answerDTO){
         Answer answer = new Answer();
         answer.setContent(answerDTO.getContent());
         answer.setCreatedAt(answerDTO.getCreatedAt());
+
         return answer;
 
     }
