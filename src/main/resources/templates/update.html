@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>질문 수정</title>
+    <!-- Bootstrap CSS 추가 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>질문 수정</h2>
+    <!-- 타임리프를 사용하여 PUT 방식으로 데이터 전송 (실제로는 POST 방식을 사용하고, _method를 사용하여 PUT으로 처리) -->
+    <form th:action="@{/question/update/{id}(id=${questionDetail.id})}" method="post">
+        <!-- PUT 메소드 에뮬레이션을 위한 hidden 필드 (스프링 부트에서는 WebMvcConfigurer를 통해 설정 필요) -->
+        <input type="hidden" name="_method" value="put" />
+        <div class="form-group">
+            <label for="title">제목</label>
+            <input type="text" class="form-control" id="title" name="title" th:value="${questionDetail.title}" required>
+        </div>
+        <div class="form-group">
+            <label for="content">내용</label>
+            <textarea class="form-control" id="content" name="content" rows="5" th:text="${questionDetail.content}" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">질문 수정</button>
+    </form>
+</div>
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
