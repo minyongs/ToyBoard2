@@ -6,7 +6,10 @@ import org.example.toyboard2.dto.QuestionDTO;
 import org.example.toyboard2.entity.Question;
 import org.example.toyboard2.exception.DataNotFoundException;
 import org.example.toyboard2.repository.QuestionRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,14 +22,14 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
 
     //get일땐 가져오는 로직이니까 entity -> dto
-    public List<QuestionDTO> getList() {
-        return questionRepository.findAll().stream()
-                .map(question -> new QuestionDTO(
-                        question.getId(),
-                        question.getTitle(),
-                        question.getContent(),
-                        question.getCreatedAt()))
-                .collect(Collectors.toList());
+    public Page<QuestionDTO> getList(Pageable pageable) {
+        Page<Question> questionPage = questionRepository.findAll(pageable);
+        return questionPage.map(question -> new QuestionDTO(
+                question.getId(),
+                question.getTitle(),
+                question.getContent(),
+                question.getCreatedAt()
+        ));
     }
 
     public QuestionDTO getDetail(Long id) {
@@ -45,6 +48,19 @@ public class QuestionService {
     public void postQuestion(QuestionDTO questionDTO){
         Question question = QuestionDTO.toEntity(questionDTO);
         questionRepository.save(question);
+
+    }
+
+    @Transactional
+    public void updateQuestion(Long id, QuestionDTO questionDTO) {
+        // findById를 사용하여 업데이트할 질문 엔티티를 찾기
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 질문이 없습니다. id=" + id));
+
+        // 찾은 질문 엔티티의 내용을 DTO로부터 받은 값으로 업데이트합니다.
+        question.setTitle(questionDTO.getTitle());
+        question.setContent(questionDTO.getContent());
+
 
     }
 

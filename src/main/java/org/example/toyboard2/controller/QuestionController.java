@@ -4,11 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.example.toyboard2.dto.QuestionDTO;
 
 import org.example.toyboard2.service.QuestionService;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -18,11 +22,10 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @GetMapping("/list")
-    public String list(Model model){
-        List<QuestionDTO> list = questionService.getList();
-        model.addAttribute("questionList", list);
+    public String list(Model model, @PageableDefault(size = 10, sort = "createdAt") Pageable pageable){
+        Page<QuestionDTO> page = questionService.getList(pageable);
+        model.addAttribute("questionPage", page);
         return "question_list";
-
     }
 
     @GetMapping("/detail/{id}")
@@ -45,6 +48,20 @@ public class QuestionController {
         questionService.postQuestion(questionDTO);
         return "redirect:/question/list";
 
+    }
+
+    @GetMapping("/update/{id}")
+    public String updateGet(@PathVariable Long id,Model model){
+        model.addAttribute("questionDetail",questionService.getDetail(id));
+
+        return "update";
+
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateQuestion(@PathVariable Long id, @ModelAttribute QuestionDTO questionDTO) {
+        questionService.updateQuestion(id, questionDTO);
+        return "redirect:/question/list";
     }
 
 
