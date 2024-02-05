@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Question List</title>
-    <!-- Bootstrap CSS 추가 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
 <div class="container mt-4">
@@ -14,29 +14,47 @@
         <tr>
             <th>제목</th>
             <th>작성일시</th>
-            <th>관리</th> <!-- 관리 열 추가 -->
+            <th>관리</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="question : ${questionList}">
+        <tr th:each="question : ${questionPage.content}">
             <td>
                 <a th:href="@{/question/detail/{id}(id=${question.id})}" th:text="${question.title}"></a>
-
             </td>
             <td th:text="${#temporals.format(question.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
             <td>
-                <!-- 삭제 요청을 위한 폼 -->
                 <form th:action="@{/question/delete/{id}(id=${question.id})}" method="post">
                     <input type="hidden" name="_method" value="delete" />
                     <button type="submit" class="btn btn-danger btn-sm">삭제</button>
                 </form>
-
             </td>
         </tr>
         </tbody>
     </table>
+
+    <!-- 페이지네이션 -->
+    <div>
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${questionPage.first} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/question/list(page=${questionPage.number - 1}, size=${questionPage.size})}">이전</a>
+            </li>
+            <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, questionPage.totalPages - 1)}" th:classappend="${questionPage.number == pageNum} ? 'active' : ''">
+                <a class="page-link" th:href="@{/question/list(page=${pageNum}, size=${questionPage.size})}" th:text="${pageNum + 1}">1</a>
+            </li>
+            <li class="page-item" th:classappend="${questionPage.last} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/question/list(page=${questionPage.number + 1}, size=${questionPage.size})}">다음</a>
+            </li>
+        </ul>
+    </div>
 </div>
-<!-- Bootstrap JS, Popper.js, and jQuery -->
+
+<div class="fixed-bottom text-right mb-4 mr-4">
+    <a th:href="@{/question/post}" class="btn btn-success btn-circle btn-lg">
+        <i class="fas fa-plus"></i> 글 등록
+    </a>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
