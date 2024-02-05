@@ -5,7 +5,6 @@
     <title>Question Detail</title>
     <!-- Bootstrap CSS 추가 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- 여기에 추가적인 CSS 또는 JavaScript 파일을 포함할 수 있습니다 -->
 </head>
 <body>
 <div class="container mt-5">
@@ -16,9 +15,13 @@
         </div>
         <div class="card-body">
             <p th:text="${questionDetail.content}">질문 내용</p>
-            <p><strong>Created At:</strong> <span th:text="${#temporals.format(questionDetail.createdAt, 'yyyy/MM/dd HH:mm')}">작성 시간</span></p>
-
+            <p><strong>작성일:</strong> <span th:text="${#temporals.format(questionDetail.createdAt, 'yyyy/MM/dd HH:mm')}">작성 시간</span></p>
         </div>
+    </div>
+
+    <!-- 수정 버튼 -->
+    <div class="mt-4">
+        <a th:href="@{/question/update/{id}(id=${questionDetail.id})}" class="btn btn-secondary">수정하기</a>
     </div>
 
     <!-- 답변 등록 폼 -->
