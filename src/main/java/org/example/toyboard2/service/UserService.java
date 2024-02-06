@@ -2,6 +2,7 @@ package org.example.toyboard2.service;
 
 
 
+import org.example.toyboard2.dto.SiteUserDTO;
 import org.example.toyboard2.entity.SiteUser;
 import org.example.toyboard2.repository.SiteUserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,12 +19,12 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public SiteUser create(String username, String email, String password) {
+    public void create(SiteUserDTO siteUserDTO) {
         SiteUser user = new SiteUser();
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(password));
+        user.setUsername(siteUserDTO.getUserName());
+        user.setEmail(siteUserDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(siteUserDTO.getPassword()));
         SiteuserRepository.save(user);
-        return user;
+
     }
 }
