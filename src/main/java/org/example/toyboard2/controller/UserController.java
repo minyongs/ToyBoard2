@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -41,6 +43,17 @@ public class UserController {
 
     }
 
+    @GetMapping("/user/login")
+    public String loginPage() {
+        return "login_form";
+    }
+
+    // 로그인 에러 처리를 위한 메소드
+    @GetMapping("/user/login-error")
+    public String loginError(Model model) {
+        model.addAttribute("loginError", true);
+        return "login_form"; // 로그인 폼 페이지의 이름을 반환하며, 로그인 에러 플래그를 모델에 추가
+    }
 
 
 
