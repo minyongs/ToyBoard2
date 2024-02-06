@@ -7,6 +7,7 @@ import org.example.toyboard2.service.QuestionService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +23,7 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @GetMapping("/list")
-    public String list(Model model, @PageableDefault(size = 10, sort = "createdAt") Pageable pageable){
+    public String list(Model model, @PageableDefault(size = 10, sort = "createdAt",direction = Sort.Direction.DESC) Pageable pageable){
         Page<QuestionDTO> page = questionService.getList(pageable);
         model.addAttribute("questionPage", page);
         return "question_list";
