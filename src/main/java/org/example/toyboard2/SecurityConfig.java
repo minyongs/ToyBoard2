@@ -22,6 +22,11 @@ public class SecurityConfig {
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+                .formLogin((formLogin) -> formLogin
+                        .loginPage("/user/login")
+                        .failureUrl("/user/login-error")
+                        .defaultSuccessUrl("/"))
+
         ;
         return http.build();
     }
