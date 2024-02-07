@@ -28,6 +28,10 @@ public class SecurityConfig {
                         .loginPage("/user/login")
                         .failureUrl("/user/login-error")
                         .defaultSuccessUrl("/"))
+                .logout((logout) -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true))
 
         ;
         return http.build();
