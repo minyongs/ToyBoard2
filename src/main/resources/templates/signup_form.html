@@ -10,23 +10,27 @@
 <div class="container mt-5">
     <h2>회원가입</h2>
     <form th:action="@{/user/signup}" method="post" th:object="${siteUserDTO}">
+        <!-- 각 필드별 오류 메시지를 표시 -->
         <div class="form-group">
             <label for="username">사용자ID</label>
             <input type="text" class="form-control" id="username" th:field="*{userName}" placeholder="사용자ID를 입력하세요" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></div>
         </div>
         <div class="form-group">
             <label for="password">비밀번호</label>
             <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="비밀번호를 입력하세요" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
         </div>
         <div class="form-group">
             <label for="password2">비밀번호 확인</label>
             <input type="password" class="form-control" id="password2" th:field="*{password2}" placeholder="비밀번호를 다시 입력하세요" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}"></div>
         </div>
         <div class="form-group">
             <label for="email">이메일</label>
             <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="이메일 주소를 입력하세요" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
         </div>
-        <!-- CSRF 토큰 필드 자동 추가 -->
 
         <button type="submit" class="btn btn-primary">회원가입</button>
     </form>
