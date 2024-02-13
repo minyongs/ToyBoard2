@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.toyboard2.entity.Answer;
+import org.example.toyboard2.entity.SiteUser;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +16,7 @@ public class AnswerDTO {
 
     private String content;
     private LocalDateTime createdAt;
+    private SiteUser user;
 
 
 
@@ -22,6 +24,7 @@ public class AnswerDTO {
         Answer answer = new Answer();
         answer.setContent(answerDTO.getContent());
         answer.setCreatedAt(answerDTO.getCreatedAt());
+        answer.setAuthor(answerDTO.user);
 
         return answer;
 
