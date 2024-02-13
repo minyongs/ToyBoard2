@@ -24,16 +24,23 @@ public class Answer {
 
     private LocalDateTime createdAt;
 
-    public Answer(String content,LocalDateTime createdAt,Question question){
+
+
+    public Answer(String content, Question question,SiteUser author){
         this.content = content;
-        this.createdAt =createdAt;
+        this.createdAt = LocalDateTime.now();
         this.question = question;
+        this.author = author;
     }
 
 
     @ManyToOne
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
+
+    @ManyToOne
+    @JoinColumn(name ="siteuser_id")
+    private SiteUser author;
 
 
 

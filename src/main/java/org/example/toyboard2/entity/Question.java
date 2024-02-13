@@ -2,10 +2,7 @@ package org.example.toyboard2.entity;
 
 import jakarta.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.example.toyboard2.dto.QuestionDTO;
 
 import java.time.LocalDateTime;
@@ -18,8 +15,7 @@ import java.util.List;
 @Entity
 public class Question {
 
-    public Question(Long id,String title,String content,LocalDateTime createdAt){
-        this.id = id;
+    public Question(String title,String content,LocalDateTime createdAt){
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
@@ -38,6 +34,8 @@ public class Question {
 
     private LocalDateTime createdAt;
 
+
+
     @PrePersist
     public void onPrePersist() {
         this.createdAt = LocalDateTime.now();
@@ -46,6 +44,10 @@ public class Question {
 
     @OneToMany(mappedBy = "question" ,fetch = FetchType.LAZY,cascade = CascadeType.REMOVE) // 글이 삭제되면 댓글도 삭제
     private List<Answer> answer;
+
+    @ManyToOne
+    @JoinColumn(name ="siteuser_id")
+    private SiteUser author;
 
 
 }
