@@ -9,18 +9,21 @@
 <body>
 <div class="container mt-5">
     <h2>질문 작성</h2>
-    <!-- 타임리프를 사용하여 POST 방식으로 데이터 전송 -->
-    <form action="/question/post_question" method="post">
-        <div class="form-group">
-            <label for="title">제목</label>
-            <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요" required>
-        </div>
-        <div class="form-group">
-            <label for="content">내용</label>
-            <textarea class="form-control" id="content" name="content" rows="5" placeholder="내용을 입력하세요" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">질문 등록</button>
-    </form>
+    <!-- 타임리프를 사용하여 POST 방식으로 데이터 전송 --><form action="/question/post_question" method="post">
+    <div class="form-group">
+        <label for="title">제목</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요" required>
+    </div>
+    <div class="form-group">
+        <label for="content">내용</label>
+        <textarea class="form-control" id="content" name="content" rows="5" placeholder="내용을 입력하세요" required></textarea>
+    </div>
+    <!-- CSRF 토큰 필드 추가 -->
+    <input type="hidden" name="_csrf" value="${_csrf.token}">
+
+    <button type="submit" class="btn btn-primary">질문 등록</button>
+</form>
+
 </div>
 <!-- Bootstrap JS, Popper.js, and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
