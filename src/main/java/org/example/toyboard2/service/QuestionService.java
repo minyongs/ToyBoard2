@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.toyboard2.dto.AnswerDTO;
 import org.example.toyboard2.dto.QuestionDTO;
 import org.example.toyboard2.entity.Question;
+import org.example.toyboard2.entity.SiteUser;
 import org.example.toyboard2.exception.DataNotFoundException;
 import org.example.toyboard2.repository.QuestionRepository;
 import org.springframework.data.domain.Page;
@@ -28,7 +29,10 @@ public class QuestionService {
                 question.getId(),
                 question.getTitle(),
                 question.getContent(),
-                question.getCreatedAt()
+                question.getCreatedAt(),
+                question.getAuthor()
+
+
         ));
     }
 
@@ -37,12 +41,13 @@ public class QuestionService {
                 .orElseThrow(() -> new DataNotFoundException("질문을 찾을수 없습니다"));
 
         List<AnswerDTO> answerDTOList = question.getAnswer().stream()
-                .map(answer -> new AnswerDTO(answer.getContent(), answer.getCreatedAt()))
+                .map(answer -> new AnswerDTO(answer.getContent(), answer.getCreatedAt(), answer.getAuthor(), answer.getId())) // AnswerDTO에 author가 포함되어 있다면 이렇게 설정
                 .collect(Collectors.toList());
 
         return new QuestionDTO(question.getId(), question.getTitle(), question.getContent(),
-                question.getCreatedAt(), answerDTOList);
+                question.getCreatedAt(), answerDTOList, question.getAuthor()); // author 정보 포함하여 QuestionDTO 생성
     }
+
 
 
     public void postQuestion(QuestionDTO questionDTO){
