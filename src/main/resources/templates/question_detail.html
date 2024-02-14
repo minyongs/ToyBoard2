@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Question Detail</title>
-    <!-- Bootstrap CSS 추가 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -12,6 +11,7 @@
     <div class="card">
         <div class="card-header">
             <h2 th:text="${questionDetail.title}">제목</h2>
+            <h6 class="card-subtitle text-muted mt-2">작성자: <span th:text="${questionDetail.author != null ? questionDetail.author.username : '익명'}"></span></h6>
         </div>
         <div class="card-body">
             <p th:text="${questionDetail.content}">질문 내용</p>
@@ -19,32 +19,59 @@
         </div>
     </div>
 
-    <!-- 수정 버튼 -->
-    <div class="mt-4">
-        <a th:href="@{/question/update/{id}(id=${questionDetail.id})}" class="btn btn-secondary">수정하기</a>
+    <div th:if="${#authorization.expression('isAuthenticated()')}">
+        <div th:if="${questionDetail.author != null and questionDetail.author.username == #authentication?.name}" class="mt-4">
+            <a th:href="@{/question/update/{id}(id=${questionDetail.id})}" class="btn btn-secondary">수정하기</a>
+            <form th:action="@{/question/delete/{id}(id=${questionDetail.id})}" method="post" class="d-inline">
+                <input type="hidden" name="_method" value="delete"/>
+                <button type="submit" class="btn btn-danger">삭제하기</button>
+            </form>
+        </div>
     </div>
 
-    <!-- 답변 등록 폼 -->
-    <div class="mt-4">
+    <div th:if="${#authorization.expression('isAuthenticated()')}" class="mt-4">
+        <h4>답변 등록</h4>
         <form th:action="@{|/answer/create/${questionDetail.id}|}" method="post">
             <div class="form-group">
-                <textarea class="form-control" name="content" id="content" rows="3"></textarea>
+                <label for="content">답변 내용</label>
+                <textarea class="form-control" name="content" id="content" rows="3" required></textarea>
             </div>
             <button type="submit" class="btn btn-primary">답변등록</button>
         </form>
     </div>
 
-    <!-- 답변 목록 -->
-    <h5 class="mt-4" th:text="|${#lists.size(questionDetail.answerDTOList)}개의 답변이 있습니다.|"></h5>
+    <h5 class="mt-4" th:text="${#lists.size(questionDetail.answerDTOList)} + '개의 답변이 있습니다.'"></h5>
     <div>
         <ul class="list-group">
-            <li class="list-group-item" th:each="answer : ${questionDetail.answerDTOList}" th:text="${answer.content}"></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center" th:each="answer : ${questionDetail.answerDTOList}">
+                <div>
+                    <p th:text="${answer.content}">답변 내용</p>
+                    <div class="text-muted" style="font-size: smaller;">
+                        작성자: <span th:text="${answer.author.username}">작성자 이름</span>
+                    </div>
+                </div>
+                <div th:if="${#authorization.expression('isAuthenticated()') and answer.author.username == #authentication?.name}" class="mt-2">
+                    <form th:action="@{/answer/delete/{id}(id=${answer.id})}" method="post" class="d-inline">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <button type="submit" class="btn btn-sm" style="color: rgba(255,0,0,0.91); font-size: smaller;">삭제하기</button>
+                    </form>
+                </div>
+            </li>
         </ul>
     </div>
-</div>
-<!-- Bootstrap JS, Popper.js, and jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- 글 목록으로 돌아가는 버튼 추가 -->
+    <div class="mt-4">
+        <a th:href="@{/question/list}" class="btn btn-outline-primary">글 목록으로 돌아가기</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function confirmLogout() {
+            return confirm('로그아웃 하시겠습니까?');
+        }
+    </script>
 </body>
 </html>
