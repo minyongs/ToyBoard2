@@ -14,6 +14,7 @@ public class SiteUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name ="siteuser_id")
     private Long id;
 
     @Column(unique = true)
@@ -23,4 +24,8 @@ public class SiteUser {
 
     @Column(unique = true)
     private String email;
+
+
+
+
 }
