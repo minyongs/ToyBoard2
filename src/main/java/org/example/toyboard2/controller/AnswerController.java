@@ -37,5 +37,18 @@ public class AnswerController {
         answerService.create(id2, content,user); // 답변 생성
         return String.format("redirect:/question/detail/%s", id);
     }
+    @PostMapping("/delete/{id}")
+    public String deleteAnswer(@PathVariable Long id) {
+
+        Long questionId = answerService.findQuestionIdByAnswerId(id);
+
+
+        answerService.delete(id);
+
+        // 댓글이 속한 질문의 상세 페이지로 리다이렉트
+        return "redirect:/question/detail/" + questionId;
+    }
+
+
 
 }
