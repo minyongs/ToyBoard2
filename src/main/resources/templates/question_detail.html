@@ -4,21 +4,70 @@
     <meta charset="UTF-8">
     <title>Question Detail</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #343a40; /* Darker background */
+            color: #ffffff; /* Light text color for contrast */
+            padding-top: 20px;
+        }
+
+        .card {
+            background-color: #424242; /* Card background */
+            border-radius: 15px; /* Rounded corners for the card */
+        }
+
+        .btn {
+            border-radius: 20px; /* Rounded buttons */
+        }
+
+        .btn-outline-primary {
+            border-color: #007bff;
+            color: #007bff;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        .list-group-item {
+            background-color: #424242; /* Background for list items */
+            color: #ffffff; /* Text color */
+            border: 1px solid #333; /* Slight border for definition */
+        }
+
+        .btn-sm {
+            font-size: 0.875em; /* Adjust font size for smaller buttons */
+        }
+
+        .text-muted {
+            color: #adb5bd !important; /* Muted text color */
+        }
+
+        /* Customizing delete button to be more subtle */
+        .btn-delete {
+            color: #dc3545; /* Bootstrap danger color for delete button text */
+        }
+
+        .btn-delete:hover {
+            color: #ffffff;
+            background-color: #dc3545;
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-5">
-    <h1 class="mb-4">질문 상세</h1>
+<div class="container">
+    <h1 class="mb-4 text-light">질문 상세</h1>
     <div class="card">
         <div class="card-header">
-            <h2 th:text="${questionDetail.title}">제목</h2>
+            <h2 class="text-light" th:text="${questionDetail.title}">제목</h2>
             <h6 class="card-subtitle text-muted mt-2">작성자: <span th:text="${questionDetail.author != null ? questionDetail.author.username : '익명'}"></span></h6>
         </div>
-        <div class="card-body">
+        <div class="card-body text-light">
             <p th:text="${questionDetail.content}">질문 내용</p>
             <p><strong>작성일:</strong> <span th:text="${#temporals.format(questionDetail.createdAt, 'yyyy/MM/dd HH:mm')}">작성 시간</span></p>
         </div>
     </div>
-
     <div th:if="${#authorization.expression('isAuthenticated()')}">
         <div th:if="${questionDetail.author != null and questionDetail.author.username == #authentication?.name}" class="mt-4">
             <a th:href="@{/question/update/{id}(id=${questionDetail.id})}" class="btn btn-secondary">수정하기</a>
@@ -30,17 +79,18 @@
     </div>
 
     <div th:if="${#authorization.expression('isAuthenticated()')}" class="mt-4">
-        <h4>답변 등록</h4>
+        <h4 class="text-light">답변 등록</h4>
         <form th:action="@{|/answer/create/${questionDetail.id}|}" method="post">
             <div class="form-group">
-                <label for="content">답변 내용</label>
+                <label for="content" class="text-light">답변 내용</label>
                 <textarea class="form-control" name="content" id="content" rows="3" required></textarea>
             </div>
             <button type="submit" class="btn btn-primary">답변등록</button>
         </form>
     </div>
 
-    <h5 class="mt-4" th:text="${#lists.size(questionDetail.answerDTOList)} + '개의 답변이 있습니다.'"></h5>
+
+    <h5 class="mt-4 text-light" th:text="${#lists.size(questionDetail.answerDTOList)} + '개의 답변이 있습니다.'"></h5>
     <div>
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center" th:each="answer : ${questionDetail.answerDTOList}">
@@ -53,14 +103,14 @@
                 <div th:if="${#authorization.expression('isAuthenticated()') and answer.author.username == #authentication?.name}" class="mt-2">
                     <form th:action="@{/answer/delete/{id}(id=${answer.id})}" method="post" class="d-inline">
                         <input type="hidden" name="_method" value="delete"/>
-                        <button type="submit" class="btn btn-sm" style="color: rgba(255,0,0,0.91); font-size: smaller;">삭제하기</button>
+                        <button type="submit" class="btn btn-sm btn-delete">삭제하기</button>
                     </form>
                 </div>
             </li>
         </ul>
     </div>
 
-    <!-- 글 목록으로 돌아가는 버튼 추가 -->
+    <!-- 글 목록으로 돌아가는 버튼 -->
     <div class="mt-4">
         <a th:href="@{/question/list}" class="btn btn-outline-primary">글 목록으로 돌아가기</a>
     </div>
@@ -68,10 +118,5 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        function confirmLogout() {
-            return confirm('로그아웃 하시겠습니까?');
-        }
-    </script>
 </body>
 </html>
