@@ -5,57 +5,120 @@
     <title>Question List</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background-color: #343a40; /* Darker background */
+            color: #fff; /* Light text color for contrast */
+            padding-top: 20px;
+        }
+
+        .table {
+            margin: auto;
+            width: 60%;
+            background-color: #fff; /* Light background for the table */
+            color: #343a40; /* Dark text color for readability */
+            border-radius: 15px; /* Rounded corners for the table */
+            overflow: hidden; /* Ensures the border-radius applies to table rows */
+        }
+
+        .btn {
+            border-radius: 20px; /* More pronounced rounded corners for buttons */
+        }
+
+        /* Customized button styles */
+        .btn-page {
+            color: #fff;
+            background-color: #6c757d; /* Bootstrap secondary color */
+        }
+
+        .btn-post {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            font-size: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%; /* Circular shape for the floating action button */
+            background-color: #28a745; /* Bootstrap success color */
+            color: white;
+        }
+
+        .page-link {
+            color: #343a40;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+        }
+
+        .page-item.active .page-link {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            color: #fff;
+            opacity: 0.8;
+            font-size: 1em;
+            animation-name: fall;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-4">
-    <!-- 로그인/로그아웃 버튼 -->
-    <div class="mb-3 text-right">
-        <a th:href="@{/user/login}" class="btn btn-success" sec:authorize="isAnonymous()">로그인</a>
-        <a th:href="@{/user/logout}" class="btn btn-danger" sec:authorize="isAuthenticated()" onclick="return confirmLogout()">로그아웃</a>
-        <a th:href="@{/user/signup}" class="btn btn-primary" sec:authorize="isAnonymous()">회원가입</a>
-    </div>
-
-    <h2>글 목록</h2>
-    <table class="table table-hover table-striped mt-3">
-        <thead class="thead-dark">
-        <tr>
-            <th>작성자</th>
-            <th>제목</th>
-            <th><i class="fas fa-calendar-alt"></i> 작성일시</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="question : ${questionPage.content}">
-            <td th:text="${question.author != null ? question.author.username : '익명'}"></td>
-            <td>
-                <a th:href="@{/question/detail/{id}(id=${question.id})}" th:text="${question.title}"></a>
-            </td>
-            <td th:text="${#temporals.format(question.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-        </tr>
-        </tbody>
-    </table>
-
-    <!-- 페이지네이션 -->
-    <div>
-        <ul class="pagination justify-content-center">
-            <li class="page-item" th:classappend="${questionPage.first} ? 'disabled' : ''">
-                <a class="page-link" th:href="@{/question/list(page=${questionPage.number - 1}, size=${questionPage.size})}">이전</a>
-            </li>
-            <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, questionPage.totalPages - 1)}" th:classappend="${questionPage.number == pageNum} ? 'active' : ''">
-                <a class="page-link" th:href="@{/question/list(page=${pageNum}, size=${questionPage.size})}" th:text="${pageNum + 1}"></a>
-            </li>
-            <li class="page-item" th:classappend="${questionPage.last} ? 'disabled' : ''">
-                <a class="page-link" th:href="@{/question/list(page=${questionPage.number + 1}, size=${questionPage.size})}">다음</a>
-            </li>
-        </ul>
-    </div>
+<!-- 로그인/로그아웃 버튼 -->
+<div class="mb-3 text-right" style="width: 80%; margin: auto;">
+    <a th:href="@{/user/login}" class="btn btn-success" sec:authorize="isAnonymous()">로그인</a>
+    <a th:href="@{/user/logout}" class="btn btn-danger" sec:authorize="isAuthenticated()" onclick="return confirmLogout()">로그아웃</a>
+    <a th:href="@{/user/signup}" class="btn btn-primary" sec:authorize="isAnonymous()">회원가입</a>
 </div>
 
-<div class="fixed-bottom text-right mb-4 mr-4">
-    <a th:href="@{/question/post}" class="btn btn-success btn-circle btn-lg" sec:authorize="isAuthenticated()">
-        <i class="fas fa-plus"></i> 글 등록
-    </a>
+<h2 class="text-center">글 목록</h2>
+<table class="table table-hover table-striped mt-3">
+    <thead class="thead-dark">
+    <tr>
+        <th>작성자</th>
+        <th>제목</th>
+        <th><i class="fas fa-calendar-alt"></i> 작성일시</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="question : ${questionPage.content}">
+        <td th:text="${question.author != null ? question.author.username : '익명'}"></td>
+        <td>
+            <a th:href="@{/question/detail/{id}(id=${question.id})}" th:text="${question.title}"></a>
+        </td>
+        <td th:text="${#temporals.format(question.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- 페이지네이션 -->
+<div class="text-center">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${questionPage.first} ? 'disabled' : ''">
+            <a class="page-link btn-page" th:href="@{/question/list(page=${questionPage.number - 1}, size=${questionPage.size})}">이전</a>
+        </li>
+        <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, questionPage.totalPages - 1)}" th:classappend="${questionPage.number == pageNum} ? 'active' : ''">
+            <a class="page-link" th:href="@{/question/list(page=${pageNum}, size=${questionPage.size})}" th:text="${pageNum + 1}"></a>
+        </li>
+        <li class="page-item" th:classappend="${questionPage.last} ? 'disabled' : ''">
+            <a class="page-link btn-page" th:href="@{/question/list(page=${questionPage.number + 1}, size=${questionPage.size})}">다음</a>
+        </li>
+    </ul>
 </div>
+
+<a th:href="@{/question/post}" class="btn btn-success btn-post" sec:authorize="isAuthenticated()">
+    <i class="fas fa-plus"></i>
+</a>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
@@ -65,6 +128,26 @@
     function confirmLogout() {
         return confirm('로그아웃 하시겠습니까?');
     }
+
+    // Snowflake script
+    function createSnowflake() {
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+        snowflake.innerHTML = '&#10052;'; // Snowflake symbol
+        const size = Math.random() * 0.5 + 0.5; // Size between 0.5em and 1em
+        const posX = Math.floor(Math.random() * window.innerWidth);
+        const duration = Math.random() * 5 + 5; // Duration between 5s and 10s
+        snowflake.style.left = `${posX}px`;
+        snowflake.style.opacity = Math.random();
+        snowflake.style.fontSize = `${size}em`;
+        snowflake.style.animationDuration = `${duration}s`;
+        document.body.appendChild(snowflake);
+        setTimeout(() => {
+            snowflake.remove();
+        }, duration * 1000);
+    }
+
+    setInterval(createSnowflake, 200);
 </script>
 </body>
 </html>
