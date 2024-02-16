@@ -16,15 +16,17 @@ public class AnswerDTO {
 
     private String content;
     private LocalDateTime createdAt;
-    private SiteUser user;
+    private SiteUser author;
+    private Long id;
 
 
 
     public static Answer toEntity(AnswerDTO answerDTO){
         Answer answer = new Answer();
+        answer.setId(answerDTO.getId());
         answer.setContent(answerDTO.getContent());
         answer.setCreatedAt(answerDTO.getCreatedAt());
-        answer.setAuthor(answerDTO.user);
+        answer.setAuthor(answerDTO.getAuthor());
 
         return answer;
 
