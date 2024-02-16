@@ -51,4 +51,16 @@ public class AnswerService {
 
     }
 
+    public void delete(Long id){
+        answerRepository.deleteById(id);
+    }
+
+    public Long findQuestionIdByAnswerId(Long answerId) {
+        return answerRepository.findById(answerId)
+                .map(Answer::getQuestion)
+                .map(Question::getId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 답변이 존재하지 않습니다. ID: " + answerId));
+    }
+
+
 }
