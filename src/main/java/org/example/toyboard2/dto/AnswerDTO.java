@@ -21,15 +21,6 @@ public class AnswerDTO {
 
 
 
-    public static Answer toEntity(AnswerDTO answerDTO){
-        Answer answer = new Answer();
-        answer.setId(answerDTO.getId());
-        answer.setContent(answerDTO.getContent());
-        answer.setCreatedAt(answerDTO.getCreatedAt());
-        answer.setAuthor(answerDTO.getAuthor());
 
-        return answer;
-
-    }
 
 }

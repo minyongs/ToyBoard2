@@ -1,10 +1,8 @@
 package org.example.toyboard2.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.toyboard2.entity.Answer;
 import org.example.toyboard2.entity.Question;
 import org.example.toyboard2.entity.SiteUser;
 
@@ -23,6 +21,8 @@ public class QuestionDTO {
     private List<AnswerDTO> answerDTOList; // 하나의 글에 여러개의 댓글이 달릴수 있으므로 AnswerDTO 들을 받을수 있는 리스트 필요
     private SiteUser author;
 
+    private String url;
+
 
     public static Question toEntity(QuestionDTO questionDTO){
         Question question = new Question();
@@ -33,12 +33,7 @@ public class QuestionDTO {
         question.setAuthor(questionDTO.getAuthor());
         return question;
     }
-    public QuestionDTO(Long id, String title, String content, LocalDateTime createdAt){
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.createdAt =createdAt;
-    }
+
 
     public QuestionDTO(Long id, String title, String content, LocalDateTime createdAt, List<AnswerDTO> answerList,SiteUser author) {
         this.id = id;
@@ -47,6 +42,7 @@ public class QuestionDTO {
         this.content = content;
         this.createdAt = createdAt;
         this.answerDTOList = answerList;
+
     }
 
     public QuestionDTO(Long id, String title, String content, LocalDateTime createdAt,SiteUser author) {
