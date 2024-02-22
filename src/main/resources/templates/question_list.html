@@ -74,11 +74,14 @@
     </style>
 </head>
 <body>
-<!-- 로그인/로그아웃 버튼 -->
-<div class="mb-3 text-right" style="width: 80%; margin: auto;">
+<!-- 로그인/로그아웃 버튼 --><div class="mb-3 text-right" style="width: 80%; margin: auto;">
     <a th:href="@{/user/login}" class="btn btn-success" sec:authorize="isAnonymous()">로그인</a>
     <a th:href="@{/user/logout}" class="btn btn-danger" sec:authorize="isAuthenticated()" onclick="return confirmLogout()">로그아웃</a>
     <a th:href="@{/user/signup}" class="btn btn-primary" sec:authorize="isAnonymous()">회원가입</a>
+    <!-- 프로필 페이지 버튼 -->
+    <a th:href="@{/user/profile}" class="btn btn-info" sec:authorize="isAuthenticated()">프로필</a>
+
+    <span th:if="${#authorization.expression('isAuthenticated()')}" th:text="${#authentication.name} + '님, 환영합니다!'"></span>
 </div>
 
 <h2 class="text-center">글 목록</h2>
