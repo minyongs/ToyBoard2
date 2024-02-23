@@ -2,11 +2,12 @@ package org.example.toyboard2.service;
 
 
 
+
 import org.example.toyboard2.dto.SiteUserDTO;
 import org.example.toyboard2.entity.SiteUser;
 import org.example.toyboard2.exception.DataNotFoundException;
 import org.example.toyboard2.repository.SiteUserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,8 @@ public class UserService {
             throw new DataNotFoundException("사용자를 찾을 수 없습니다");
         }
     }
+
+
 
     }
 
