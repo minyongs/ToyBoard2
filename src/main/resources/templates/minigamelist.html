@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>미니게임 목록</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .main-effect {
+            padding-top: 20px;
+            background: linear-gradient(to bottom, #2d3e50 0%, #4b79a1 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .game-card {
+            background-color: #fff;
+            color: #343a40;
+            border-radius: 15px;
+            padding: 20px;
+            margin: auto;
+            width: 60%;
+            margin-top: 20px;
+        }
+
+        .btn-custom {
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="main-effect">
+    <div class="container">
+        <h1 class="text-center mb-5">미니게임 목록</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="game-card text-center">
+                    <h2>타이밍 테스트</h2>
+                    <p>랜덤하게 설정된 시간(3, 5, 7초)에 맞춰 정확한 시간에 타이머를 멈추어야 하는 게임입니다.</p>
+                    <!-- 타이밍 테스트 게임으로 이동하는 버튼 -->
+                    <a href="/minigame1" class="btn btn-primary btn-custom">게임 시작</a>
+                </div>
+                <!-- 추가 게임 카드를 여기에 배치 -->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
